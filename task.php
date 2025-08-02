@@ -10,7 +10,7 @@ function loadTask(){
         return [];
     }
     $taskData = file_get_contents(TASK_FILE); 
-    return $taskData ? json_decode(TASK_FILE, true) : []; // Convert JsonData to Array 
+    return $taskData ? json_decode($taskData, true) : []; // Convert JsonData to Array 
 }
 $tasks = loadTask();
 
@@ -29,7 +29,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             'done' => false
         ]);
         saveTask($tasks);
-        header('location :'. $_SERVER['PHP_SELF']);
+        header('Location: '. $_SERVER['PHP_SELF']);
         exit;
     }
     
@@ -38,15 +38,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $deleteTask = $_POST['delete'];
         unset($tasks[$deleteTask]);
         saveTask($tasks);
-        header('location: '. $_SERVER['PHP_SELF']);
+        header('Location: '. $_SERVER['PHP_SELF']);
         exit;
     }
 
-// Step Seventh: checking task complete or not with toggling
+// Step Seventh: Toggle task complete/incomplete
     elseif(isset($_POST['toggle'])){
-        $tasks[$_POST['toggle']['done']] = !$tasks[$_POST['toggle']['done']];
+        $jIndex = $_POST['toggle'];
+        $tasks[$jIndex['done']] = !$tasks[$jIndex['done']];
         saveTask($tasks);
-        header('location: '. $_SERVER['PHP_SELF']);
+        header('Location: '. $_SERVER['PHP_SELF']);
         exit;
     }
 }
@@ -63,10 +64,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TO DO App</title>
     <style>
-
+        header{
+            text-align: center;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background: red;
+        }
     </style>
 </head>
 <body>
-    
+    <header>
+        <h1>TO DO Application with PHP</h1>
+    </header>
+    <main>
+    </main>
 </body>
 </html>
