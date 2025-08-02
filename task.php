@@ -37,6 +37,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     elseif(isset($_POST['delete'])){
         $deleteTask = $_POST['delete'];
         unset($tasks[$deleteTask]);
+        $tasks  = array_values($tasks);
         saveTask($tasks);
         header('Location: '. $_SERVER['PHP_SELF']);
         exit;
@@ -45,7 +46,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 // Step Seventh: Toggle task complete/incomplete
     elseif(isset($_POST['toggle'])){
         $jIndex = $_POST['toggle'];
-        $tasks[$jIndex['done']] = !$tasks[$jIndex['done']];
+        $tasks[$jIndex]['done'] = !$tasks[$jIndex]['done'];
         saveTask($tasks);
         header('Location: '. $_SERVER['PHP_SELF']);
         exit;
@@ -67,16 +68,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         body{
             font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(120deg, #f6f9fc, #e0f7fa);
-            margin: 0 auto;
+            margin: 0;
             padding: 20px;
         }
         .container{
             max-width: 600px;
             width: 100%;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            gap: 10px;
+            margin: auto;
             background: #fff;
             padding: 30px;
             border-radius: 15px;
@@ -85,6 +83,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         h2 {
             text-align: center;
             color: #00695c;
+            padding-bottom: 20px;
+        }
+        h4{
+            color: #3d8440;
         }
         form input[type="text"] {
             width: 70%;
@@ -119,7 +121,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
         li.done {
             text-decoration: line-through;
-            color: gray;
+            color: #0b3731;
+            background: #8ad7d0;
+            font-weight: bold;
         }
         .buttons form {
             display: inline-block;
@@ -134,14 +138,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             border-radius: 4px;
         }
         .buttons .delete {
-            background: #e53935;
+            background-color: #e53935;
         }
     </style>
 </head>
 <body>
     <main>
         <div class="container">
-            <h2>TO DO Application with PHP</h2>
+            <h2>📝 My Task List | TODO App with PHP</h2>
 
             <form method="POST">
                 <input type="text" name="task" placeholder="Add your Task...">
@@ -150,18 +154,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             <ul>
                 <?php if(empty($tasks)): ?>
-                <li>There is No Task yet. </li>
+                <h4>There is No Task yet. add a Task</h4>
 
                 <?php else : ?>
                 <?php foreach ($tasks as $index => $task): ?>
                     <li class="<?php echo $task['done'] ? 'done' : '' ?>">
-                        <?php echo $index+1 . ' ' .htmlspecialchars($task['task']) ?>
+                        <?php echo $index+1 . '. ' .$task['task']?>
                         <div class="buttons">
                             <form method="post">
                                 <button name="toggle" value="<?= $index ?>">☑️Complete</button>
                             </form>
                             <form method="post">
-                                <button name="delete" value="<?= $index ?>">🗑️ Delete</button>
+                                <button class="delete" name="delete" value="<?= $index ?>">🗑️ Delete</button>
                             </form>
                         </div>
                     </li>
