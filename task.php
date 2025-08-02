@@ -149,9 +149,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             </form>
 
             <ul>
+                <?php if(empty($tasks)): ?>
+                <li>There is No Task yet. </li>
+
+                <?php else : ?>
                 <?php foreach ($tasks as $index => $task): ?>
-                    <li class="<?php $task['done'] ? 'done' : '' ?>">
-                        <?php htmlspecialchars($task['task']) ?>
+                    <li class="<?php echo $task['done'] ? 'done' : '' ?>">
+                        <?php echo $index+1 . ' ' .htmlspecialchars($task['task']) ?>
                         <div class="buttons">
                             <form method="post">
                                 <button name="toggle" value="<?= $index ?>">☑️Complete</button>
@@ -162,6 +166,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                         </div>
                     </li>
                 <?php endforeach; ?>
+                <?php endif ?>
             </ul>
         </div>
     </main>
